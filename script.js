@@ -1,10 +1,47 @@
+// const { createElement } = require("react");
 
 //Make score variables and set them to 0
 let humanScore = 0
 let computerScore = 0
 
 //Start game
-playGame()
+// playGame()
+
+const btns = document.querySelectorAll('.btn')
+const rockBtn = document.querySelector('#rockBtn')
+const paperBtn = document.querySelector('#paperBtn')
+const scissorsBtn = document.querySelector('#scissorsBtn')
+const resultsDiv = document.querySelector('#results')
+const scoreDiv = document.querySelector('#score')
+
+const scoreText = document.createElement("p")
+scoreDiv.appendChild(scoreText)
+
+const winnerText = document.createElement("p")
+scoreDiv.appendChild(winnerText)
+
+
+btns.forEach((item)=>item.addEventListener('click', playIt))
+
+function playIt(e){
+
+    const resultText = document.createElement("p")
+resultText.textContent = playRound(e.target.textContent,getComputerChoice())
+resultsDiv.appendChild(resultText)
+scoreText.textContent = `You have ${humanScore} point${humanScore>1?'s':''}, the computer has ${computerScore} point${computerScore>1?'s':''}` 
+
+if(humanScore < 5 && computerScore < 5){
+winnerText.textContent = `The score is you: ${humanScore} vs computer: ${computerScore}, ${humanScore>computerScore?'you are in the lead!':humanScore<computerScore? 'you are losing...':'it goes neck to neck!'} `
+}else if(humanScore == 5){
+winnerText.textContent = `You won!!!`
+}else if(computerScore == 5){
+    winnerText.textContent = `Better luck next time...`
+} else {
+    winnerText.textContent = `Stop!`
+}
+
+}
+
 
 //Function that plays a game of maximum 5 rounds
 function playGame() {
@@ -52,22 +89,22 @@ function playRound(humanChoice, computerChoice) {
         case 'rockscissors':
         case 'paperrock':
         case 'scissorspaper':
-            console.log(`You win! ${humanChoice} beats ${computerChoice}`)
             humanScore++
+            return `You win! ${humanChoice} beats ${computerChoice}`
             break;
         case 'rockpaper':
         case 'paperscissors':
         case 'scissorsrock':
-            console.log(`You lose! ${computerChoice} beats ${humanChoice}`)
             computerScore++
+            return `You lose! ${computerChoice} beats ${humanChoice}`
             break;
         case 'rockrock':
         case 'paperpaper':
         case 'scissorsscissors':
-            console.log(`It's a draw!`)
+            return `It's a draw!`
             break;
         default:
-            console.log('No score')
+            return 'No score'
             break;
     }
 
